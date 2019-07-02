@@ -3,23 +3,20 @@ import React, { Component } from 'react';
 import './input-field.css';
 
 export default class InputListItem extends Component {
-
-    state = {value: this.props.defaultValue ? this.props.defaultValue : 10};
-
     handleChange = (e) => {
-        this.setState({value: e.target.value});
+        this.props.update(e.target.value);
     };
 
     handleBlur = (e) => {
         if (Number(e.target.value) > Number(e.target.max)) {
-            this.setState({value: e.target.max});
+            this.props.update(e.target.max);
         } else if (Number(e.target.value) < Number(e.target.min)) {
-            this.setState({value: e.target.min});
+            this.props.update(e.target.min);
         }
     };
 
     render() {
-        const {label = '', id = '', min = 1, max = 40, step = 1} = this.props;
+        const {label = '', id = '', min = 1, max = 40, step = 1, value} = this.props;
 
         return (
             <div>
@@ -31,7 +28,7 @@ export default class InputListItem extends Component {
                     min={min}
                     max={max}
                     step={step}
-                    value={this.state.value}
+                    value={value}
                     onChange={ this.handleChange }
                     onBlur={ this.handleBlur }
                 />
