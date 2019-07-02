@@ -12,15 +12,15 @@ export default class Matrix extends React.Component {
         };
 
         const tableTemplate = arr.map((row, rowNum) => {
-            return <tr key={"tr" + rowNum}>{makeColumns(row, rowNum)}</tr>
+            return <tr key={rowNum}>{makeColumns(row, rowNum)}</tr>
         });
 
         return (
-            <table className="table table-bordered">
-                <tbody>
-                    {tableTemplate}
-                </tbody>
-            </table>
+
+                <table className="table table-bordered">
+                    <tbody>{tableTemplate}</tbody>
+                </table>
+
         );
     }
 }

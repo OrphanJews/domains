@@ -11,8 +11,9 @@ export default class MatrixItem extends React.Component {
     };
 
     render() {
+        const {el} = this.props;
         return (
-            <td style={{backgroundColor: this.props.el.color}} onClick={this.onClick}>{this.props.el.value}</td>
+            <td style={{backgroundColor: el.color}} onClick={this.onClick}>{el.value}</td>
         );
     }
 }
