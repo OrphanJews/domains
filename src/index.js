@@ -15,7 +15,7 @@ class CreateElement extends React.Component {
         const {col = 0, onClick = ''} = this.props;
 
         return (
-            <td>{col}</td>
+            <td onClick={onClick(this.state.x, this.state.y)}>{col}</td>
         );
     }
 }
@@ -33,18 +33,18 @@ class App extends React.Component {
 
     onClick = (x, y) => {
         const arr = this.state.arr;
-        arr[x][y] = Number(arr[x][x]) === 1 ? 0 : 1;
+        arr[x][y] = Number(arr[x][y]) === 1 ? 0 : 1;
         this.setState({
             arr: arr
         });
     };
 
     render() {
-        function makeColumns(row, rowNum) {
+        const makeColumns = (row, rowNum) => {
             return row.map((col, colNum) => {
-                return <CreateElement x={rowNum} y={colNum} col={col} onClick=''/>
+                return <CreateElement x={rowNum} y={colNum} col={col} onClick={this.onClick}/>
             });
-        }
+        };
 
         const tableTemplate = this.state.arr.map((row, rowNum) => {
             return <tr>{makeColumns(row, rowNum)}</tr>
