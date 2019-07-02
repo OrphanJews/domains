@@ -4,30 +4,52 @@ import Matrix from "../matrix/matrix";
 
 import './app.css';
 
+const getArrayEmpty = (width, height) => {
+    const arr = [];
+
+    for (let x = 0; x < height; x++) {
+        const test = [];
+        for (let y = 0; y < width; y++) {
+            test.push({value: 0, color: '#ffffff'});
+        }
+        arr.push(test);
+    }
+
+    return arr;
+};
+
+const getRandomColor = () => {
+    const num = Math.random()*(255**3);
+    const r = Math.ceil(num % 255);
+    const g = Math.ceil(((num-r)/255)%255);
+    const b = Math.ceil(((((num-r)/255)-g)/255)%255);
+    return `#${dec2hex(r)}${dec2hex(g)}${dec2hex(b)}`
+};
+
+const dec2hex = (decNum) => {
+    let hexNum = decNum.toString(16);
+    if (hexNum.length === 1){
+        hexNum = `0${hexNum}`;
+    }
+    return hexNum
+};
+
 export default class App extends React.Component {
     state = {
         matrixWidth: 10,
         matrixHeight: 10,
         probability: 0.5,
+        domains: [],
         domainCount: 0,
 
-        arr: [
-            [0,0,0,0,0,0],
-            [0,0,0,0,0,0],
-            [0,0,0,0,0,0],
-            [0,0,0,0,0,0],
-            [0,0,0,0,0,0],
-        ]
+        arr: getArrayEmpty(10, 10)
     };
 
     updateMatrixItemState = (x, y) => {
         const arr = this.state.arr;
-        arr[x][y] = Number(!arr[x][y]);
+        arr[x][y].value = Number(!arr[x][y].value);
+        arr[x][y].color = '#ffffff';
         this.setState({arr});
-    };
-
-    updateCount = (count) => {
-        this.setState({ domainCount: count });
     };
 
     updateMatrixWidth = (width) => {
@@ -62,59 +84,48 @@ export default class App extends React.Component {
         }
     }
 
-    // getRandomColor = () => {
-    //     const num = Math.random()*(255**3);
-    //     const r = Math.ceil(num % 255);
-    //     const g = Math.ceil(((num-r)/255)%255);
-    //     const b = Math.ceil(((((num-r)/255)-g)/255)%255);
-    //     return `#${this.dec2hex(r)}${this.dec2hex(g)}${this.dec2hex(b)}`
-    // };
+    fillDomains = () => {
+        const domains = this.state.domains;
+        const matrix = this.state.arr;
+        domains.forEach((domain) => {
+            const color = getRandomColor();
+            domain.forEach( (item) => {
+                console.log(item);
+                matrix[item.y][item.x].color = color;
+            })
+        });
 
-    // dec2hex = (decNum) => {
-    //     let hexNum = decNum.toString(16);
-    //     if (hexNum.length === 1){
-    //         hexNum = `0${hexNum}`;
-    //     }
-    //     return hexNum
-    // };
+        this.setState({arr: matrix})
+    };
 
     createMatrix =() => {
-        const arr = [];
-
-        for (let i = 0; i < this.state.matrixHeight; i++) {
-            arr.push(Array(this.state.matrixWidth).fill(0));
-        }
+        const arr = getArrayEmpty(this.state.matrixWidth, this.state.matrixHeight);
 
         this.setState({arr})
     };
 
     findDomains = () => {
-        let count = 0;
         const domains = [];
         const arr = this.state.arr.map((arr) => {
-            return arr.slice();
+            return arr.map((item) => {
+                return item.value;
+            });
         });
 
         for (const rowNumber in arr) {
             for (const columnNumber in arr[rowNumber]) {
                 if (Number(arr[rowNumber][columnNumber]) === 1) {
                     domains.push(this.fill(arr, parseInt(columnNumber), parseInt(rowNumber)));
-                    count++;
                 }
             }
         }
 
-        this.updateCount(count);
-
         return domains
     };
 
-    showDomains = () => {
-        this.findDomains();
-    };
-
     result = () => {
-        this.showDomains();
+        const domains = this.findDomains();
+        this.setState({domains, domainCount: domains.length}, () => {this.fillDomains();});
     };
 
     render() {

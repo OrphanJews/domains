@@ -11,7 +11,6 @@ export default class InputListItem extends Component {
         const value = Number(e.target.value);
         const min = Number(e.target.min);
         const max = Number(e.target.max);
-
         if (value > max) {
             this.props.update(max);
         } else if (value < min) {
