@@ -20,8 +20,6 @@ export default class Matrix extends React.Component {
     };
 
     updateMatrixItemState = (x, y) => {
-        console.log(x);
-        console.log(y);
         const arr = this.state.arr;
         arr[x][y] = Number(arr[x][y]) === 1 ? 0 : 1;
         this.setState({
@@ -30,9 +28,6 @@ export default class Matrix extends React.Component {
     };
 
     render() {
-        // console.log(this.state.test);
-        // console.log(this.state.arr);
-
         const makeColumns = (row, rowNum) => {
             return row.map((col, colNum) => {
                 return <MatrixItem x={rowNum} y={colNum} col={col} onClick={this.updateMatrixItemState}/>
@@ -45,7 +40,6 @@ export default class Matrix extends React.Component {
 
         return (
             <table className="table table-bordered">
-
                 <tbody>
                     {tableTemplate}
                 </tbody>
