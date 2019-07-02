@@ -12,25 +12,18 @@ export default class App extends React.Component {
         domainCount: 0,
 
         arr: [
-            Array(10).fill(0),
-            Array(10).fill(0),
-            Array(10).fill(0),
-            Array(10).fill(0),
-            Array(10).fill(0),
-            Array(10).fill(0),
-            Array(10).fill(0),
-            Array(10).fill(0),
-            Array(10).fill(0),
-            Array(10).fill(0),
+            [0,0,0,0,0,0],
+            [0,0,0,0,0,0],
+            [0,0,0,0,0,0],
+            [0,0,0,0,0,0],
+            [0,0,0,0,0,0],
         ]
     };
 
     updateMatrixItemState = (x, y) => {
         const arr = this.state.arr;
-        arr[x][y] = Number(arr[x][y]) === 1 ? 0 : 1;
-        this.setState({
-            arr: arr
-        });
+        arr[x][y] = Number(!arr[x][y]);
+        this.setState({arr});
     };
 
     updateCount = (count) => {
@@ -85,10 +78,23 @@ export default class App extends React.Component {
     //     return hexNum
     // };
 
+    createMatrix =() => {
+        const arr = [];
+
+        for (let i = 0; i < this.state.matrixHeight; i++) {
+            arr.push(Array(this.state.matrixWidth).fill(0));
+        }
+
+        this.setState({arr})
+    };
+
     findDomains = () => {
         let count = 0;
         const domains = [];
-        const arr = this.state.arr;
+        const arr = this.state.arr.map((arr) => {
+            return arr.slice();
+        });
+
         for (const rowNumber in arr) {
             for (const columnNumber in arr[rowNumber]) {
                 if (Number(arr[rowNumber][columnNumber]) === 1) {
@@ -104,10 +110,7 @@ export default class App extends React.Component {
     };
 
     showDomains = () => {
-        const domains = this.findDomains();
-        console.log(this.state.domainCount);
-        console.log(this.state.arr);
-        console.log(domains);
+        this.findDomains();
     };
 
     result = () => {
@@ -115,6 +118,7 @@ export default class App extends React.Component {
     };
 
     render() {
+        console.log(this.state.arr);
         return (
             <div className="container">
                 <div className="row mt-3">
@@ -124,7 +128,7 @@ export default class App extends React.Component {
                         <InputField label="Вероятность" id="probability" min="0.1" max="0.9" step="0.1" defaultValue="0.5" value={this.state.probability} update={this.updateProbability}/>
                     </div>
                     <div className="col-12 col-lg-6">
-                        <button type="button" className="btn btn-outline-secondary btn-active">Построение матрицы</button>
+                        <button type="button" className="btn btn-outline-secondary btn-active" onClick={this.createMatrix}>Построение матрицы</button>
                         <button type="button" className="btn btn-outline-secondary btn-active" onClick={this.result}>Подсчет доменов в матрице</button>
                         <button type="button" className="btn btn-outline-secondary btn-active">Автозаполнение</button>
                     </div>

@@ -7,7 +7,7 @@ export default class Matrix extends React.Component {
 
         const makeColumns = (row, rowNum) => {
             return row.map((col, colNum) => {
-                return <MatrixItem x={rowNum} y={colNum} col={col} onClick={onClick}/>
+                return <MatrixItem key={colNum} x={rowNum} y={colNum} col={col} onClick={onClick}/>
             });
         };
 

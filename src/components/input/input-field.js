@@ -4,14 +4,18 @@ import './input-field.css';
 
 export default class InputListItem extends Component {
     handleChange = (e) => {
-        this.props.update(e.target.value);
+        this.props.update(Number(e.target.value));
     };
 
     handleBlur = (e) => {
-        if (Number(e.target.value) > Number(e.target.max)) {
-            this.props.update(e.target.max);
-        } else if (Number(e.target.value) < Number(e.target.min)) {
-            this.props.update(e.target.min);
+        const value = Number(e.target.value);
+        const min = Number(e.target.min);
+        const max = Number(e.target.max);
+
+        if (value > max) {
+            this.props.update(max);
+        } else if (value < min) {
+            this.props.update(min);
         }
     };
 

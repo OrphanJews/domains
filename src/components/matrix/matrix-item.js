@@ -14,7 +14,7 @@ export default class MatrixItem extends React.Component {
         const {col = 0} = this.props;
 
         return (
-            <td key={String(this.state.y) + String(this.state.y)} onClick={this.onClick}>{col}</td>
+            <td onClick={this.onClick}>{col}</td>
         );
     }
 }
