@@ -9,16 +9,18 @@ import {findDomains} from '../../utilities/domains';
 
 import './app.css';
 
+const matrixSizeDefault = 10;
+
 export default class App extends React.Component {
     state = {
-        matrixWidth: 10,
-        matrixHeight: 10,
+        matrixWidth: matrixSizeDefault,
+        matrixHeight: matrixSizeDefault,
         probability: 0.5,
         domains: [],
         statistic: [],
         domainsCount: 0,
 
-        arr: getArrayEmpty(10, 10)
+        arr: getArrayEmpty(matrixSizeDefault, matrixSizeDefault)
     };
 
     updateMatrixItemState = (x, y) => {
